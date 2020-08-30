@@ -1,0 +1,1 @@
+python.exe src/diff.py test/a.xlsx test/b.xlsx
