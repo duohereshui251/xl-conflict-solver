@@ -5,15 +5,17 @@ import os
 # import colorama
 # from oletools.olevba3 import VBA_Parser
 import xlwings as xw
-from colorama import Fore, Back, Style, init
+from colorama import Fore, Back, Style, init, deinit
+
+init(wrap=True, autoreset=True)
 
 diffs = {}
 
 if __name__ == '__main__':
     if not 3 == len(sys.argv):
-        print('Unexpected number of arguments: '+ len(sys.argv))
+        print('Unexpected number of arguments: ' + len(sys.argv))
         sys.exit(0)
-    book_a_path, book_b_path = sys.argv[1], sys.argv[2] 
+    book_a_path, book_b_path = sys.argv[1], sys.argv[2]
     book_a = xw.Book(book_a_path)
     book_b = xw.Book(book_b_path)
     sheets = []
@@ -27,19 +29,20 @@ if __name__ == '__main__':
         sheet_a = book_a.sheets[sht_name]
         sheet_b = book_b.sheets[sht_name]
         rows = max(len(sheet_a.used_range.rows), len(sheet_b.used_range.rows))
-        columns = max(len(sheet_a.used_range.columns),len(sheet_b.used_range.columns))
+        columns = max(len(sheet_a.used_range.columns),
+                      len(sheet_b.used_range.columns))
         # print('[Debug] row:{0}, col:{1}'.format(rows, columns) )
 
-        for row in range(1,rows+1):
+        for row in range(1, rows+1):
             # 整行相同跳过
-            if sheet_a.range((row,1), (row,columns)).value == sheet_b.range((row,1),(row,columns )).value: 
+            if sheet_a.range((row, 1), (row, columns)).value == sheet_b.range((row, 1), (row, columns)).value:
                 continue
 
             for col in range(1, columns+1):
                 # print('[Debug] a/{0}'.format(sheet_a.range((row,col)).value))
                 # print('[Debug] b/{0}'.format(sheet_b.range((row,col)).value))
 
-                if sheet_a.range((row,col)).value == sheet_b.range((row,col)).value:
+                if sheet_a.range((row, col)).value == sheet_b.range((row, col)).value:
                     continue
                 # a 是当前文件
                 # b 是要对比的文件
@@ -72,6 +75,7 @@ if __name__ == '__main__':
             print(diff['a'])
             print(diff['b'])
             print(diff['diff'])
-            print('\n')
+            # print('\n')
+    deinit()
 
                     
