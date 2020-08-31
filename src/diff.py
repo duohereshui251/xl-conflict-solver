@@ -12,12 +12,11 @@ from colorama import Fore, Back, Style, init, deinit
 # 主要针对windows powershell颜色无法显示的问题
 # init(wrap=True, autoreset=True)
 
-diffs = {}
-
-if __name__ == '__main__':
+def make_diff():
+    diffs = {}
+    print(sys.argv)
     if not 8 <= len(sys.argv) <= 9:
         print('Unexpected number of arguments: {0}'.format(len(sys.argv)))
-        print(sys.argv)
         sys.exit(0)
     # 参数为8个
     if len(sys.argv) == 8:
@@ -29,7 +28,6 @@ if __name__ == '__main__':
         _, numlines, workbook_name, workbook_b, _, _, workbook_a, _, _ = sys.argv
         numlines = int(numlines)
     
-
     book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None
@@ -93,5 +91,9 @@ if __name__ == '__main__':
             print(diff['diff'])
             # print('\n')
     # deinit()
+    return diffs
+
+if __name__ == '__main__':
+    make_diff()
 
                     
