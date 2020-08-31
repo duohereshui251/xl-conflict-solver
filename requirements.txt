@@ -1,0 +1,4 @@
+colorama==0.3.9
+oletools==0.51
+pyinstaller==3.3.1
+xlwings==0.20.5
