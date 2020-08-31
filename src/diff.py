@@ -2,22 +2,38 @@ import sys
 import os
 # from difflib import unified_diff
 
-# import colorama
 # from oletools.olevba3 import VBA_Parser
-import xlwings as xw
-from colorama import Fore, Back, Style, init, deinit
 
-init(wrap=True, autoreset=True)
+# excel处理工具
+import xlwings as xw 
+# 命令行输出显示颜色
+from colorama import Fore, Back, Style, init, deinit 
+
+# 主要针对windows powershell颜色无法显示的问题
+# init(wrap=True, autoreset=True)
 
 diffs = {}
 
 if __name__ == '__main__':
-    if not 3 == len(sys.argv):
-        print('Unexpected number of arguments: ' + len(sys.argv))
+    if not 8 <= len(sys.argv) <= 9:
+        print('Unexpected number of arguments: {0}'.format(len(sys.argv)))
+        print(sys.argv)
         sys.exit(0)
-    book_a_path, book_b_path = sys.argv[1], sys.argv[2]
-    book_a = xw.Book(book_a_path)
-    book_b = xw.Book(book_b_path)
+    # 参数为8个
+    if len(sys.argv) == 8:
+        _, workbook_name, workbook_b, _, _, workbook_a, _ , _ = sys.argv
+        numlines = 3
+
+    # 参数为9个
+    if len(sys.argv) == 9:
+        _, numlines, workbook_name, workbook_b, _, _, workbook_a, _, _ = sys.argv
+        numlines = int(numlines)
+    
+
+    book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
+    book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
+    book_a = xw.Book(book_a_path) if book_a_path else None
+    book_b = xw.Book(book_b_path) if book_b_path else None
     sheets = []
     for sht in book_a.sheets:
         sheets.append(sht.name)
@@ -72,10 +88,10 @@ if __name__ == '__main__':
     for k, v in diffs.items():
         print('in sheet ' + k)
         for diff in v:
-            print(diff['a'])
-            print(diff['b'])
+            if diff['a'] :  print(diff['a'])
+            if diff['b']:   print(diff['b'])
             print(diff['diff'])
             # print('\n')
-    deinit()
+    # deinit()
 
                     
