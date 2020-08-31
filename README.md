@@ -27,7 +27,11 @@ https://github.com/xlwings/git-xl
     - 图片改动检测
 
 2. 将编写好的代码使用工具生成exe格式的可执行文件
-3. 将生成的程序添加到git diff, git merge等组件中中，可以做到git diff对比xlsx格式文件会调用到我们的程序输出差异，可以参考相关教程：
+3. 将生成的程序添加到git diff, git merge等组件中中，可以做到git diff对比xlsx格式文件会调用到我们的程序输出差异，可以参考相关教程(可能要翻墙)：https://www.xltrail.com/blog/git-diff-spreadsheetcompare
 
 4. 有能力的话，实现web界面查看每一次commit的改动，可以参考 `https://www.xltrail.com/` 网站的效果（但我估计八成做不出来）
+
+## 如何分工协作
+在src文件夹下面编写不同的文件实现不同的功能，例如要实现对比用户自定义函数，可以单独新建一个`diff_userfunc.py`， 最后在其他文件中包含该文件
+
 
