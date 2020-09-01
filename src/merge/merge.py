@@ -27,11 +27,10 @@ def make_merge(workbook_a, workbook_b):
 
         for diff in diffs[sht.name]:
             # TODO: 设置颜色
+            print('merge cell {}'.format(diff['address']))
             sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(diff['diff'][0],diff['diff'][1])
     
     book_a.save()
-    book_a.close()
-    book_b.close()
     keys = xw.apps.keys()
     for key in keys:
         xw.apps[key].kill()
