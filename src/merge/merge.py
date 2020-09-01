@@ -5,7 +5,8 @@ import xlwings as xw
 def make_merge(workbook_a, workbook_b):
 
     diffs = make_diff(workbook_a, workbook_b)
-
+    if not diffs:
+        return
     book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None
