@@ -1,0 +1,2 @@
+*.xls* diff=excel
+*.xls* merge=ExcelMerge
