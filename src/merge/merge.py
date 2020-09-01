@@ -32,6 +32,7 @@ def make_merge(args = None):
 
 if __name__ == '__main__':
     print(sys.argv)
+    print("Conflict resolved!")
     # make_merge()
 
 
