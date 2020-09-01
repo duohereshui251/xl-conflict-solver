@@ -32,6 +32,9 @@ def make_merge(workbook_a, workbook_b):
             sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(diff['diff'][0],diff['diff'][1])
             
     book_a.save()
+    keys = xw.apps.keys()
+    for key in keys:
+        xw.apps[key].kill()
 
 if __name__ == '__main__':
     # print(sys.path)
