@@ -21,7 +21,7 @@ echo ""
 
 echo "Resolving conflict ..."
 
-echo "This is the merge result" > $2
+
 echo "Conflict resolved!"
 
 echo "resolved: $2"
