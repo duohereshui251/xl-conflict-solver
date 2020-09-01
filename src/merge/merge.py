@@ -33,7 +33,8 @@ def make_merge(workbook_a, workbook_b):
 if __name__ == '__main__':
     # print(sys.path)
     print(sys.argv)
-    make_merge(sys.argv[2], sys.argv[3])
+    # xw.Book(os.path.abspath(sys.argv[2]))
+    # make_merge(sys.argv[2], sys.argv[3])
     print("Conflict resolved!")
 
 
