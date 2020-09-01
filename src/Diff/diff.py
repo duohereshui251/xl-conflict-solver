@@ -21,24 +21,23 @@ def print_diff(diffs):
             if diff['diff'][0]: print('{}+{}'.format(Fore.GREEN,diff['diff'][0]))
             if diff['diff'][1]: print('{}-{}'.format(Fore.RED,diff['diff'][1]))
 
-def make_diff(args = None):
+def make_diff(workbook_a =None, workbook_b= None):
     diffs = {}
     # print(sys.argv)
-    if not args: args = sys.argv
+    if not workbook_a or not workbook_b: 
+        args = sys.argv
+        if not 8 <= len(args) <= 9:
+            print('Unexpected number of arguments: {0}'.format(len(args)))
+            sys.exit(0)
+        # 参数为8个
+        if len(args) == 8:
+            workbook_b, workbook_a = args[2], args[5]
+            # _, workbook_name, workbook_b, _, _, workbook_a, _ , _ = args
+        # 参数为9个
+        if len(args) == 9:
+            workbook_b, workbook_a = args[3], args[6]
+            # _, _, workbook_name, workbook_b, _, _, workbook_a, _, _ = args
 
-    if not 8 <= len(args) <= 9:
-        print('Unexpected number of arguments: {0}'.format(len(args)))
-        sys.exit(0)
-    # 参数为8个
-    if len(args) == 8:
-        _, workbook_name, workbook_b, _, _, workbook_a, _ , _ = args
-        numlines = 3
-
-    # 参数为9个
-    if len(args) == 9:
-        _, numlines, workbook_name, workbook_b, _, _, workbook_a, _, _ = args
-        numlines = int(numlines)
-    
     book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None

@@ -1,28 +1,10 @@
-import sys
-from os.path import abspath, join, dirname
-sys.path.insert(0, join(abspath(dirname(__file__)), 'src'))
-
 from Diff.diff import make_diff
 import sys, os
 import xlwings as xw
 
-def make_merge(args = None):
-    if not args: args = sys.argv
+def make_merge(workbook_a, workbook_b):
 
-    if not 8 <= len(args) <= 9:
-        print('Unexpected number of arguments: {0}'.format(len(args)))
-        sys.exit(0)
-    # 参数为8个
-    if len(args) == 8:
-        _, workbook_name, workbook_b, _, _, workbook_a, _ , _ = args
-        numlines = 3
-
-    # 参数为9个
-    if len(args) == 9:
-        _, numlines, workbook_name, workbook_b, _, _, workbook_a, _, _ = args
-        numlines = int(numlines)
-
-    # diffs = make_diff()
+    diffs = make_diff(workbook_a, workbook_b)
 
     book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
@@ -32,13 +14,27 @@ def make_merge(args = None):
     sheets = []
     for sht in book_a.sheets:
         sheets.append(sht.name)
-    pass
+    for sht_name in sheets:
+        if not book_b.sheets[sht.name]:
+            # 添加sheet
+            book_b.sheets.add(sht.name)
+        sheet_a = book_a.sheets[sht.name]
+        sheet_b = book_b.sheets[sht.name]
+
+        for diff in diffs[sht.name]:
+            # TODO: 设置颜色
+            sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(diff['diff'][0],diff['diff'][1])
+    
+    book_a.save()
+    book_a.close()
+    book_b.close()
 
 if __name__ == '__main__':
-    print(sys.path)
-    print(sys.argv)
+    # print(sys.path)
+    # print(sys.argv)
+    make_merge(sys.argv[2], sys.argv[3])
     print("Conflict resolved!")
-    # make_merge()
+
 
 
 
