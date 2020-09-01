@@ -10,7 +10,8 @@
             "request": "launch",
             "program": "${file}",
             "args": ["test/a.xlsx", "test/b.xlsx"],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
