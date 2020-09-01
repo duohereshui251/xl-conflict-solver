@@ -30,7 +30,8 @@ def make_merge(workbook_a, workbook_b):
             print('merge cell {}'.format(diff['address']))
             print('<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(diff['diff'][0],diff['diff'][1]))
             sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(diff['diff'][0],diff['diff'][1])
-    
+            print(sheet_a.range(diff['address']).value)
+            
     book_a.save()
     keys = xw.apps.keys()
     for key in keys:
