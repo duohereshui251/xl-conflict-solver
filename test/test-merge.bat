@@ -19,3 +19,5 @@ git commit -m"demo-branch-2: change a.xlsx"
 
 :: Merge the two branches, causing a conflict
 git merge -m"Merged in demo-branch-1" demo-branch-1
+
+REM git reset --merge  
