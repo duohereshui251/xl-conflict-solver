@@ -1,3 +1,7 @@
+import sys
+from os.path import abspath, join, dirname
+sys.path.insert(0, join(abspath(dirname(__file__)), 'src'))
+
 from Diff.diff import make_diff
 import sys, os
 import xlwings as xw
@@ -18,7 +22,7 @@ def make_merge(args = None):
         _, numlines, workbook_name, workbook_b, _, _, workbook_a, _, _ = args
         numlines = int(numlines)
 
-    diffs = make_diff()
+    # diffs = make_diff()
 
     book_a_path = os.path.abspath(workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
@@ -31,6 +35,7 @@ def make_merge(args = None):
     pass
 
 if __name__ == '__main__':
+    print(sys.path)
     print(sys.argv)
     print("Conflict resolved!")
     # make_merge()

@@ -11,7 +11,9 @@
             "program": "${file}",
             "args": ["test/a.xlsx", "test/b.xlsx"],
             "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/.env"
+            "env": {
+                "PYTHONPATH": "./src"
+            }
         }
     ]
 }
