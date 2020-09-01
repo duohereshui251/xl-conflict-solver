@@ -14,9 +14,11 @@ def make_merge(workbook_a, workbook_b):
     book_b = xw.Book(book_b_path) if book_b_path else None
     print("merge start")
     sheets = []
+
     for sht in book_a.sheets:
         sheets.append(sht.name)
     for sht_name in sheets:
+        print("merge sheet: {}".format(sht_name))
         if not book_b.sheets[sht.name]:
             # 添加sheet
             book_b.sheets.add(sht.name)
