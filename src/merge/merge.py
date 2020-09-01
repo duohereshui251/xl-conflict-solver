@@ -29,12 +29,14 @@ def make_merge(workbook_a, workbook_b):
     book_a.save()
     book_a.close()
     book_b.close()
+    keys = xw.apps.keys()
+    for key in keys:
+        xw.apps[key].kill()
 
 if __name__ == '__main__':
     # print(sys.path)
     print(sys.argv)
-    xw.Book(os.path.abspath(sys.argv[1]))
-    # make_merge(sys.argv[2], sys.argv[3])
+    make_merge(sys.argv[1], sys.argv[2])
     print("Conflict resolved!")
 
 

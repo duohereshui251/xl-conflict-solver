@@ -107,6 +107,9 @@ def make_diff(workbook_a =None, workbook_b= None):
     book_b.close()
     print_diff(diffs)
     # deinit()
+    keys = xw.apps.keys()
+    for key in keys:
+        xw.apps[key].kill()
     return diffs
 
 if __name__ == '__main__':
