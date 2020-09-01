@@ -1,1 +1,2 @@
 *.xls* diff=excel
+*.xls* merge=my-excel-merge-tool
