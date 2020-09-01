@@ -42,6 +42,7 @@ def make_diff(workbook_a =None, workbook_b= None):
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None
     book_b = xw.Book(book_b_path) if book_b_path else None
+    print("打开成功")
     sheets = []
     for sht in book_a.sheets:
         sheets.append(sht.name)
