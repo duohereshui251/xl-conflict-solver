@@ -12,7 +12,7 @@ def make_merge(workbook_a, workbook_b):
     book_b_path = os.path.abspath(workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None
     book_b = xw.Book(book_b_path) if book_b_path else None
-
+    print("merge start")
     sheets = []
     for sht in book_a.sheets:
         sheets.append(sht.name)
