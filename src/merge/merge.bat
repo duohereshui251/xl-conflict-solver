@@ -10,5 +10,5 @@ python.exe src/merge/merge.py temp_a.xlsx temp_b.xlsx
 
 REM cp temp_a.xlsx  test/a.xlsx
 cat temp_a.xlsx >  "%2"
-REM rm temp_b.xlsx
+rm temp_a.xlsx temp_b.xlsx
 exit 0
