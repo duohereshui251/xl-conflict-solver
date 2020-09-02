@@ -27,7 +27,7 @@ virtualenv  venv
 ```
 pip -r requirements.txt
 ```
-然后运行test文件夹中的脚本
+然后运行test文件夹中的脚本testetstetetetet
 
 ## 参考项目
 ```
