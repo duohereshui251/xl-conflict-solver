@@ -1,7 +1,10 @@
 git checkout master
 git branch -D demo-branch-1
 git branch -D demo-branch-2
-python.exe test/example.py 33333333
+python.exe test/example.py aaaaaaaa
+git add test/a.xlsx
+git commit -m"master: change a.xlsx"
+
 :: Create 'my-file.mrg' on branch 1
 git checkout -b demo-branch-1
 echo "change a.xlsx on demo-branch-1" 
