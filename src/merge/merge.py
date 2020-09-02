@@ -36,7 +36,7 @@ def make_merge(workbook_a, workbook_b):
 
         for diff in diffs[sht.name]:
             # TODO: 设置颜色
-            sheet_a.range(diff['address']).color = backgroundRGB
+            sheet_a.range(diff['address']).color = red_RGB
             # print('merge cell {}'.format(diff['address']))
             # print('<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(
             #     diff['diff'][0], diff['diff'][1]))
