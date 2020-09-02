@@ -2,4 +2,4 @@
     command = python.exe src/diff/diff.py
 [merge "ExcelMerge"]
     name = A custom merge driver used to resolve conflicts in excel files
-	driver  = python.exe src/merge/merge.py %O %A %B
+	driver  = src/merge/merge.bat %O %A %B
