@@ -10,7 +10,7 @@ import xlwings as xw
 from colorama import Fore, Back, Style, init, deinit 
 
 # 主要针对windows powershell颜色无法显示的问题
-# init(wrap=True, autoreset=True)
+init(wrap=True, autoreset=True)
 
 def print_diff(diffs):
     for k, v in diffs.items():
@@ -106,7 +106,7 @@ def make_diff(workbook_a =None, workbook_b= None):
     book_a.close()
     book_b.close()
     print_diff(diffs)
-    # deinit()
+    deinit()
     keys = xw.apps.keys()
     for key in keys:
         xw.apps[key].kill()
