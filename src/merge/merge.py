@@ -61,13 +61,15 @@ if __name__ == '__main__':
     print('start merging {}'.format(sys.argv[4]))
     print(sys.argv)
     file_o, file_a, file_b, filename = sys.argv[1:5]
-    copy_o = 'temp_{}_o.xlsx'.format(filename)
-    copy_a = 'temp_{}_a.xlsx'.format(filename)
-    copy_b = 'temp_{}_b.xlsx'.format(filename)
-    shutil.copyfile(file_o, copy_o)
-    shutil.copyfile(file_a, copy_a)
-    shutil.copyfile(file_b, copy_b)
+    copy_o = 'temp_o.xlsx'
+    copy_a = 'temp_a.xlsx'
+    copy_b = 'temp_b.xlsx'
+    shutil.copy(file_o, copy_o)
+    shutil.copy(file_a, copy_a)
+    shutil.copy(file_b, copy_b)
     make_merge(file_o, file_a, file_b)
+    os.system('cat {} > {}'.format(file_a, file_a))
+    os.system('rm {} {} {}'.format(file_a, file_a, file_b))
     if not isConflict:
         print("Conflict resolved!")
         exit(0)
