@@ -15,13 +15,13 @@ init(wrap=True, autoreset=True)
 def print_diff(diffs):
     for k, v in diffs.items():
         print('in sheet ' + k)
-        for diff in v:
+        for _,diff in v.items():
             if diff['a'] :  print('{}+++ a/{}/{}'.format(Fore.WHITE,diff['a'],diff['address']))
             if diff['b']:   print('{}--- b/{}/{}'.format(Fore.WHITE,diff['b'],diff['address']))
             if diff['diff'][0]: print('{}+{}'.format(Fore.GREEN,diff['diff'][0]))
             if diff['diff'][1]: print('{}-{}'.format(Fore.RED,diff['diff'][1]))
 
-def make_diff(workbook_a =None, workbook_b= None):
+def make_diff(workbook_a =None, workbook_b= None, printOn = True):
     diffs = {}
     # print(sys.argv)
     if not workbook_a or not workbook_b: 
@@ -59,7 +59,7 @@ def make_diff(workbook_a =None, workbook_b= None):
         if not book_b.sheets[sht_name]:
             # todo 记录表的不同
             continue
-        diffs[sht_name] = []
+        diffs[sht_name] = {}
         sheet_a = book_a.sheets[sht_name]
         sheet_b = book_b.sheets[sht_name]
         rows = max(len(sheet_a.used_range.rows), len(sheet_b.used_range.rows))
@@ -80,32 +80,34 @@ def make_diff(workbook_a =None, workbook_b= None):
                     continue
                 # a 是当前文件
                 # b 是要对比的文件
+                address = sheet_b.range((row,col)).address.replace('$', '')
                 if not sheet_a.range((row,col)).value and sheet_b.range((row,col)).value:
                     # a在b的基础上删除了
-                    diffs[sht_name].append({
-                        'address':sheet_b.range((row,col)).address.replace('$', ''),
+                    diffs[sht_name][address] = {
+                        'address':address,
                         'a':'',
                         'b':book_b.name,
                         'diff': ['',sheet_b.range((row,col)).value]
-                    })
-                    #  a 在 b的基础上增加了
+                    }
+                    #  a在b的基础上增加了
                 elif sheet_a.range((row,col)).value and not sheet_b.range((row,col)).value:
-                    diffs[sht_name].append({
-                        'address': sheet_a.range((row,col)).address.replace('$', ''),
+                    diffs[sht_name][address] = {
+                        'address': address,
                         'a':book_a.name,
                         'b':'',
                         'diff': [sheet_a.range((row,col)).value,'']
-                    })
+                    }
                 elif sheet_a.range((row,col)).value != sheet_b.range((row,col)).value:
-                    diffs[sht_name].append({
-                        'address': sheet_b.range((row,col)).address.replace('$', ''),
+                    diffs[sht_name][address] = {
+                        'address': address,
                         'a':book_a.name,
                         'b':book_b.name,
                         'diff': [sheet_a.range((row,col)).value,sheet_b.range((row,col)).value]
-                    })
+                    }
     book_a.close()
     book_b.close()
-    print_diff(diffs)
+    if printOn:
+        print_diff(diffs)
     deinit()
     keys = xw.apps.keys()
     for key in keys:

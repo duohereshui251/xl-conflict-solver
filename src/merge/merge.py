@@ -9,37 +9,47 @@ backgroundRGB = (255, 217, 179)
 red_RGB = (255, 0, 0)
 green_RGB = (0, 255, 0)
 
+isConflict = False
 
-def make_merge(workbook_a, workbook_b):
 
-    diffs = make_diff(workbook_a, workbook_b)
-    if not diffs:
-        print("not diffs")
-        return
+def make_merge(workbook_o, workbook_a, workbook_b):
+
+    diffs_oa = make_diff(workbook_a, workbook_o, False)
+    diffs_ob = make_diff(workbook_b, workbook_o, False)
+
     book_a_path = os.path.abspath(
         workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
     book_b_path = os.path.abspath(
         workbook_b) if workbook_b != 'nul' and workbook_b != '/dev/null' else None
     book_a = xw.Book(book_a_path) if book_a_path else None
     book_b = xw.Book(book_b_path) if book_b_path else None
-    print("merge start")
+
     sheets = []
 
     for sht in book_a.sheets:
         sheets.append(sht.name)
+
     for sht_name in sheets:
         print("merge sheet: {}".format(sht_name))
-        if not book_b.sheets[sht.name]:
+        if not book_b.sheets[sht_name]:
             # 添加sheet
-            book_b.sheets.add(sht.name)
-        sheet_a = book_a.sheets[sht.name]
-        sheet_b = book_b.sheets[sht.name]
+            book_b.sheets.add(sht_name)
 
-        for diff in diffs[sht.name]:
-            sheet_a.range(diff['address']).color = red_RGB
-            sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(
-                diff['diff'][0], diff['diff'][1])
-            
+        sheet_a = book_a.sheets[sht_name]
+        sheet_b = book_b.sheets[sht_name]
+
+        for addr, _ in diffs_ob[sht_name].items():
+            # 同一单元格，本地和他人都改了
+            if addr in diffs_oa[sht_name]:
+                # 标记有冲突
+                isConflict = True
+                sheet_a.range(addr).color = red_RGB
+                sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
+                    sheet_a.range(addr).value, sheet_b.range(addr).value)
+            else:
+                # 同一单元格，本地没改别人改了, 那么就采取别人的改动
+                sheet_a.range(addr).value = sheet_b.range(addr).value
+
     book_a.save()
     keys = xw.apps.keys()
     for key in keys:
@@ -48,13 +58,18 @@ def make_merge(workbook_a, workbook_b):
 
 if __name__ == '__main__':
     # print(sys.path)
-    print('start merge')
+    print('start merging {}'.format(sys.argv[4]))
     print(sys.argv)
-    file_o, file_a, file_b = sys.argv[1:]
-    shutil.copyfile(file_o, 'temp_o.xlsx')
-    shutil.copyfile(file_a, 'temp_a.xlsx')
-    shutil.copyfile(file_b, 'temp_b.xlsx')
-    
-    # make_merge(sys.argv[1], sys.argv[2])
-    print("Conflict resolved!")
-
+    file_o, file_a, file_b, filename = sys.argv[1:5]
+    copy_o = 'temp_{}_o.xlsx'.format(filename)
+    copy_a = 'temp_{}_a.xlsx'.format(filename)
+    copy_b = 'temp_{}_b.xlsx'.format(filename)
+    shutil.copyfile(file_o, copy_o)
+    shutil.copyfile(file_a, copy_a)
+    shutil.copyfile(file_b, copy_b)
+    make_merge(file_o, file_a, file_b)
+    if not isConflict:
+        print("Conflict resolved!")
+        exit(0)
+    else:
+        exit(1)
