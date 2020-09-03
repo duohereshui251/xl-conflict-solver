@@ -70,8 +70,8 @@ if __name__ == '__main__':
     make_merge(copy_o, copy_a, copy_b)
     os.system('cat {} > {}'.format(copy_a, file_a))
     os.system('rm {} {} {}'.format(copy_o, copy_a, copy_b))
-    if not isConflict:
-        print("Conflict resolved!")
-        exit(0)
+    if isConflict:
+        print("{} has conflict".format(filename))
+        exit(-1)
     else:
-        exit(1)
+        exit(0)
