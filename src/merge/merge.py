@@ -68,8 +68,8 @@ if __name__ == '__main__':
     shutil.copy(file_a, copy_a)
     shutil.copy(file_b, copy_b)
     make_merge(copy_o, copy_a, copy_b)
-    os.system('cat {} > {}'.format(file_a, file_a))
-    os.system('rm {} {} {}'.format(file_a, file_a, file_b))
+    os.system('cat {} > {}'.format(copy_a, file_a))
+    os.system('rm {} {} {}'.format(copy_o, copy_a, copy_b))
     if not isConflict:
         print("Conflict resolved!")
         exit(0)
