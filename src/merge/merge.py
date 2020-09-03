@@ -43,6 +43,7 @@ def make_merge(workbook_o, workbook_a, workbook_b):
             if addr in diffs_oa[sht_name]:
                 # 标记有冲突
                 print('{} has conflict in cell {}'.format(sht_name, addr))
+                global isConflict
                 isConflict = True
                 sheet_a.range(addr).color = red_RGB
                 sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
@@ -71,6 +72,7 @@ if __name__ == '__main__':
     make_merge(copy_o, copy_a, copy_b)
     os.system('cat {} > {}'.format(copy_a, file_a))
     os.system('rm {} {} {}'.format(copy_o, copy_a, copy_b))
+
     if isConflict:
         print("{} has conflict".format(filename))
         exit(-1)
