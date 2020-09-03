@@ -1,4 +1,4 @@
-from Diff.diff import make_diff
+from Diff.diff import make_diff, DiffType
 import sys
 import os
 import shutil
@@ -7,7 +7,7 @@ from xlwings.utils import rgb_to_int
 
 backgroundRGB = (255, 217, 179)
 red_RGB = (236, 173, 158)
-green_RGB = (0, 255, 0)
+green_RGB = (160, 238, 225)
 
 isConflict = False
 
@@ -38,19 +38,30 @@ def make_merge(workbook_o, workbook_a, workbook_b):
         sheet_a = book_a.sheets[sht_name]
         sheet_b = book_b.sheets[sht_name]
 
-        for addr, _ in diffs_ob[sht_name].items():
+        for addr, diff in diffs_ob[sht_name].items():
             # 同一单元格，本地和他人都改了
             if addr in diffs_oa[sht_name]:
                 # 标记有冲突
                 print('{} has conflict in cell {}'.format(sht_name, addr))
                 global isConflict
                 isConflict = True
-                sheet_a.range(addr).color = red_RGB
-                sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
-                    sheet_a.range(addr).value, sheet_b.range(addr).value)
+                # 值冲突为红色， 函数冲突为绿色
+                if diff['type'] == DiffType.formula or diffs_oa[sht_name][addr]['type'] == DiffType.formula:
+                    sheet_a.range(addr).formula = None
+                    sheet_a.range(addr).color = green_RGB
+                    sheet_a.range(addr).value = '<<<<<<< 表格函数冲突,请重新设置 our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
+                    diffs_oa[sht_name]['diff'][0], diffs_ob[sht_name]['diff'][0])
+                else:
+                    sheet_a.range(addr).color = red_RGB
+                    sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
+                        sheet_a.range(addr).value, sheet_b.range(addr).value)
+
             else:
                 # 同一单元格，本地没改别人改了, 那么就采取别人的改动
-                sheet_a.range(addr).value = sheet_b.range(addr).value
+                if diff['type'] == DiffType.value:
+                    sheet_a.range(addr).value = sheet_b.range(addr).value
+                else:
+                    sheet_a.range(addr).formula = sheet_b.range(addr).formula
 
     book_a.save()
     keys = xw.apps.keys()

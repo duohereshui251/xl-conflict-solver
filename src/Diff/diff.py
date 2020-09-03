@@ -8,6 +8,11 @@ import os
 import xlwings as xw 
 # 命令行输出显示颜色
 from colorama import Fore, Back, Style, init, deinit 
+from enum import Enum
+
+class DiffType(Enum):
+    value = 1
+    formula = 2
 
 # 主要针对windows powershell颜色无法显示的问题
 init(wrap=True, autoreset=True)
@@ -16,6 +21,8 @@ def print_diff(diffs):
     for k, v in diffs.items():
         print('in sheet ' + k)
         for _,diff in v.items():
+            if diff['type'] == DiffType.formula:
+                print('formula different')
             if diff['a'] :  print('{}+++ a/{}/{}'.format(Fore.WHITE,diff['a'],diff['address']))
             if diff['b']:   print('{}--- b/{}/{}'.format(Fore.WHITE,diff['b'],diff['address']))
             if diff['diff'][0]: print('{}+{}'.format(Fore.GREEN,diff['diff'][0]))
@@ -81,29 +88,45 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 # a 是当前文件
                 # b 是要对比的文件
                 address = sheet_b.range((row,col)).address.replace('$', '')
-                if not sheet_a.range((row,col)).value and sheet_b.range((row,col)).value:
+
+                # 检测函数的差异
+                if sheet_a.range((row, col)).formula != sheet_a.range((row, col)).formula:
+                    diffs[sht_name][address] = {
+                        'type': DiffType.formula,
+                        'address':address,
+                        'a': book_a.name if sheet_a.range((row, col)).formula else '',
+                        'b': book_b.name if sheet_b.range((row, col)).formula else '',
+                        'diff': [sheet_a.range((row, col)).formula, sheet_b.range((row, col)).formula]
+                    }
+                    continue
+                
+                # 检测值的差异
+                if sheet_a.range((row,col)).value != sheet_b.range((row,col)).value:
                     # a在b的基础上删除了
                     diffs[sht_name][address] = {
+                        'type': DiffType.value,
                         'address':address,
-                        'a':'',
-                        'b':book_b.name,
-                        'diff': ['',sheet_b.range((row,col)).value]
-                    }
-                    #  a在b的基础上增加了
-                elif sheet_a.range((row,col)).value and not sheet_b.range((row,col)).value:
-                    diffs[sht_name][address] = {
-                        'address': address,
-                        'a':book_a.name,
-                        'b':'',
-                        'diff': [sheet_a.range((row,col)).value,'']
-                    }
-                elif sheet_a.range((row,col)).value != sheet_b.range((row,col)).value:
-                    diffs[sht_name][address] = {
-                        'address': address,
-                        'a':book_a.name,
-                        'b':book_b.name,
+                        'a':book_a.name if sheet_a.range((row,col)).value else '',
+                        'b':book_b.name if sheet_b.range((row,col)).value else '',
                         'diff': [sheet_a.range((row,col)).value,sheet_b.range((row,col)).value]
                     }
+                #     #  a在b的基础上增加了
+                # elif sheet_a.range((row,col)).value and not sheet_b.range((row,col)).value:
+                #     diffs[sht_name][address] = {
+                #         'type': DiffType.value,
+                #         'address': address,
+                #         'a':book_a.name,
+                #         'b':'',
+                #         'diff': [sheet_a.range((row,col)).value,'']
+                #     }
+                # elif sheet_a.range((row,col)).value != sheet_b.range((row,col)).value:
+                #     diffs[sht_name][address] = {
+                #         'type': DiffType.value,
+                #         'address': address,
+                #         'a':book_a.name,
+                #         'b':book_b.name,
+                #         'diff': [sheet_a.range((row,col)).value,sheet_b.range((row,col)).value]
+                #     }
     book_a.close()
     book_b.close()
     if printOn:
