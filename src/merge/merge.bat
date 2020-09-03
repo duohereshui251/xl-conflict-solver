@@ -1,8 +1,6 @@
 
 echo "# Merge driver called #"
 
-
-
 cp "%2" temp_a.xlsx
 cp "%3" temp_b.xlsx
 rm "%1"

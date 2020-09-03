@@ -1,6 +1,7 @@
 from Diff.diff import make_diff
 import sys
 import os
+import shutil
 import xlwings as xw
 from xlwings.utils import rgb_to_int
 
@@ -35,15 +36,10 @@ def make_merge(workbook_a, workbook_b):
         sheet_b = book_b.sheets[sht.name]
 
         for diff in diffs[sht.name]:
-            # TODO: 设置颜色
             sheet_a.range(diff['address']).color = red_RGB
-            # print('merge cell {}'.format(diff['address']))
-            # print('<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(
-            #     diff['diff'][0], diff['diff'][1]))
             sheet_a.range(diff['address']).value = '<<<<<<<\n{}\n=======\n{}\n>>>>>>>'.format(
                 diff['diff'][0], diff['diff'][1])
             
-
     book_a.save()
     keys = xw.apps.keys()
     for key in keys:
@@ -52,6 +48,13 @@ def make_merge(workbook_a, workbook_b):
 
 if __name__ == '__main__':
     # print(sys.path)
+    print('start merge')
     print(sys.argv)
-    make_merge(sys.argv[1], sys.argv[2])
+    file_o, file_a, file_b = sys.argv[1:]
+    shutil.copyfile(file_o, 'temp_o.xlsx')
+    shutil.copyfile(file_a, 'temp_a.xlsx')
+    shutil.copyfile(file_b, 'temp_b.xlsx')
+    
+    # make_merge(sys.argv[1], sys.argv[2])
     print("Conflict resolved!")
+
