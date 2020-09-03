@@ -6,7 +6,7 @@ import xlwings as xw
 from xlwings.utils import rgb_to_int
 
 backgroundRGB = (255, 217, 179)
-red_RGB = (255, 0, 0)
+red_RGB = (236, 173, 158)
 green_RGB = (0, 255, 0)
 
 isConflict = False
@@ -42,6 +42,7 @@ def make_merge(workbook_o, workbook_a, workbook_b):
             # 同一单元格，本地和他人都改了
             if addr in diffs_oa[sht_name]:
                 # 标记有冲突
+                print('{} has conflict in cell {}'.format(sht_name, addr))
                 isConflict = True
                 sheet_a.range(addr).color = red_RGB
                 sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
@@ -74,4 +75,5 @@ if __name__ == '__main__':
         print("{} has conflict".format(filename))
         exit(-1)
     else:
+        print('merge file {} success'.format(filename))
         exit(0)
