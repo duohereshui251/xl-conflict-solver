@@ -22,8 +22,6 @@ def print_diff(diffs):
     for k, v in diffs.items():
         print('in sheet ' + k)
         for _,diff in v.items():
-            if diff['type'] == DiffType.formula:
-                print('formula different')
             if diff['a'] :  print('{}+++ a/{}/{}'.format(Fore.WHITE,diff['a'],diff['address']))
             if diff['b']:   print('{}--- b/{}/{}'.format(Fore.WHITE,diff['b'],diff['address']))
             if diff['diff'][0]: print('{}+{}'.format(Fore.GREEN,diff['diff'][0]))
@@ -93,6 +91,7 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
 
                 # 检测函数的差异
                 if sheet_a.range((row, col)).formula != sheet_b.range((row, col)).formula:
+                    print('formula different:\n{}\n{}'.format(sheet_a.range((row, col)).formula, sheet_b.range((row, col)).formula))
                     diffs[sht_name][address] = {
                         'type': DiffType.formula,
                         'address':address,
