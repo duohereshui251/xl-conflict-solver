@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 bbbbbb
-=======
-lualualal
->>>>>>> c28c12f5f100d66b930ec10a6874bf3dbe36ae13
