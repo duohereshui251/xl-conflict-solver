@@ -15,9 +15,10 @@ class DiffType(Enum):
     formula = 2
 
 # 主要针对windows powershell颜色无法显示的问题
-init(wrap=True, autoreset=True)
+
 
 def print_diff(diffs):
+    init(wrap=True, autoreset=True)
     for k, v in diffs.items():
         print('in sheet ' + k)
         for _,diff in v.items():
@@ -27,6 +28,7 @@ def print_diff(diffs):
             if diff['b']:   print('{}--- b/{}/{}'.format(Fore.WHITE,diff['b'],diff['address']))
             if diff['diff'][0]: print('{}+{}'.format(Fore.GREEN,diff['diff'][0]))
             if diff['diff'][1]: print('{}-{}'.format(Fore.RED,diff['diff'][1]))
+    deinit()
 
 def make_diff(workbook_a =None, workbook_b= None, printOn = True):
     diffs = {}
@@ -90,7 +92,7 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 address = sheet_b.range((row,col)).address.replace('$', '')
 
                 # 检测函数的差异
-                if sheet_a.range((row, col)).formula != sheet_a.range((row, col)).formula:
+                if sheet_a.range((row, col)).formula != sheet_b.range((row, col)).formula:
                     diffs[sht_name][address] = {
                         'type': DiffType.formula,
                         'address':address,
@@ -131,7 +133,7 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
     book_b.close()
     if printOn:
         print_diff(diffs)
-    deinit()
+    
     keys = xw.apps.keys()
     for key in keys:
         xw.apps[key].kill()
