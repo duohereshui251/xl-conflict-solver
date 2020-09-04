@@ -30,7 +30,7 @@ def make_merge(workbook_o, workbook_a, workbook_b):
         sheets.append(sht.name)
 
     for sht_name in sheets:
-        print("merge sheet: {}".format(sht_name))
+        # print("merge sheet: {}".format(sht_name))
         if not book_b.sheets[sht_name]:
             # 添加sheet
             book_b.sheets.add(sht_name)
@@ -46,16 +46,16 @@ def make_merge(workbook_o, workbook_a, workbook_b):
                 global isConflict
                 isConflict = True
                 # 值冲突为红色， 函数冲突为绿色
-                print(diff['type'])
-                print(diffs_oa[sht_name][addr]['type'])
+                # print(diff['type'])
+                # print(diffs_oa[sht_name][addr]['type'])
                 if diff['type'] == DiffType.formula or diffs_oa[sht_name][addr]['type'] == DiffType.formula:
-                    print('formula conflict')
+                    print('confilic type: formula conflict')
                     # 先不更改原来的函数
                     sheet_a.range(addr).color = green_RGB
                     sheet_a.range(addr).value = '<<<<<<< 表格函数冲突,请重新设置 our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
                     sheet_a.range(addr).formula, sheet_b.range(addr).formula)
                 else:
-                    print('value conflict')
+                    print('confilic type: value conflict')
                     sheet_a.range(addr).color = red_RGB
                     sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
                         sheet_a.range(addr).value, sheet_b.range(addr).value)
@@ -75,8 +75,8 @@ def make_merge(workbook_o, workbook_a, workbook_b):
 
 if __name__ == '__main__':
     # print(sys.path)
-    print('[Debug] start merging {}'.format(sys.argv[4]))
-    print('[Debug] {}'.format(sys.argv))
+    # print('[Debug] start merging {}'.format(sys.argv[4]))
+    # print('[Debug] {}'.format(sys.argv))
     file_o, file_a, file_b, filename = sys.argv[1:5]
     copy_o = 'temp_o.xlsx'
     copy_a = 'temp_a.xlsx'
@@ -88,16 +88,16 @@ if __name__ == '__main__':
     os.system('cat {} > {}'.format(copy_a, file_a))
     os.system('rm {} {} {}'.format(copy_o, copy_a, copy_b))
 
-    print('[Debug] kill all excel apps')
+    # print('[Debug] kill all excel apps')
     keys = xw.apps.keys()
-    print('[Debug] {}'.format(keys))
+    # print('[Debug] {}'.format(keys))
     for key in keys:
-        print('[Debug] kill excel app {}'.format(key))
+        # print('[Debug] kill excel app {}'.format(key))
         xw.apps[key].kill()
 
     if isConflict:
-        print("[Debug] {} has conflict".format(filename))
+        # print("[Debug] {} has conflict".format(filename))
         exit(-1)
     else:
-        print('[Debug] merge file {} success'.format(filename))
+        # print('[Debug] merge file {} success'.format(filename))
         exit(0)
