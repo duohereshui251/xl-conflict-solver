@@ -75,8 +75,8 @@ def make_merge(workbook_o, workbook_a, workbook_b):
 
 if __name__ == '__main__':
     # print(sys.path)
-    print('start merging {}'.format(sys.argv[4]))
-    print(sys.argv)
+    print('[Debug] start merging {}'.format(sys.argv[4]))
+    print('[Debug] {}'.format(sys.argv))
     file_o, file_a, file_b, filename = sys.argv[1:5]
     copy_o = 'temp_o.xlsx'
     copy_a = 'temp_a.xlsx'
@@ -88,9 +88,16 @@ if __name__ == '__main__':
     os.system('cat {} > {}'.format(copy_a, file_a))
     os.system('rm {} {} {}'.format(copy_o, copy_a, copy_b))
 
+    print('[Debug] kill all excel apps')
+    keys = xw.apps.keys()
+    print('[Debug] {}'.format(keys))
+    for key in keys:
+        print('[Debug] kill excel app {}'.format(key))
+        xw.apps[key].kill()
+
     if isConflict:
-        print("{} has conflict".format(filename))
+        print("[Debug] {} has conflict".format(filename))
         exit(-1)
     else:
-        print('merge file {} success'.format(filename))
+        print('[Debug] merge file {} success'.format(filename))
         exit(0)
