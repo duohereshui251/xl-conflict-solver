@@ -14,8 +14,8 @@ isConflict = False
 
 def make_merge(workbook_o, workbook_a, workbook_b):
 
-    diffs_oa = make_diff(workbook_a, workbook_o, False)
-    diffs_ob = make_diff(workbook_b, workbook_o, False)
+    diffs_oa = make_diff(workbook_a, workbook_o, True)
+    diffs_ob = make_diff(workbook_b, workbook_o, True)
 
     book_a_path = os.path.abspath(
         workbook_a) if workbook_a != 'nul' and workbook_a != '/dev/null' else None
@@ -46,6 +46,8 @@ def make_merge(workbook_o, workbook_a, workbook_b):
                 global isConflict
                 isConflict = True
                 # 值冲突为红色， 函数冲突为绿色
+                print(diff['type'])
+                print(diffs_oa[sht_name][addr]['type'])
                 if diff['type'] == DiffType.formula or diffs_oa[sht_name][addr]['type'] == DiffType.formula:
                     print('formula conflict')
                     sheet_a.range(addr).formula = None
