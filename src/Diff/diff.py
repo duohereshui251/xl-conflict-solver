@@ -129,8 +129,6 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 #         'b':book_b.name,
                 #         'diff': [sheet_a.range((row,col)).value,sheet_b.range((row,col)).value]
                 #     }
-    book_a.close()
-    book_b.close()
     if printOn:
         print_diff(diffs)
     
