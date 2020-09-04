@@ -50,7 +50,7 @@ def make_merge(workbook_o, workbook_a, workbook_b):
                 print(diffs_oa[sht_name][addr]['type'])
                 if diff['type'] == DiffType.formula or diffs_oa[sht_name][addr]['type'] == DiffType.formula:
                     print('formula conflict')
-                    sheet_a.range(addr).formula = None
+                    # 先不更改原来的函数
                     sheet_a.range(addr).color = green_RGB
                     sheet_a.range(addr).value = '<<<<<<< 表格函数冲突,请重新设置 our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
                     sheet_a.range(addr).formula, sheet_b.range(addr).formula)
