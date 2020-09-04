@@ -53,7 +53,7 @@ def make_merge(workbook_o, workbook_a, workbook_b):
                     sheet_a.range(addr).formula = None
                     sheet_a.range(addr).color = green_RGB
                     sheet_a.range(addr).value = '<<<<<<< 表格函数冲突,请重新设置 our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
-                    diffs_oa[sht_name][addr]['diff'][0], diffs_ob[sht_name][addr]['diff'][0])
+                    sheet_a.range(addr).formula, sheet_b.range(addr).formula)
                 else:
                     print('value conflict')
                     sheet_a.range(addr).color = red_RGB
