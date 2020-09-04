@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     if isConflict:
         # print("[Debug] {} has conflict".format(filename))
-        exit(-1)
+        sys.exit(-1)
     else:
         # print('[Debug] merge file {} success'.format(filename))
-        exit(0)
+        sys.exit(0)
