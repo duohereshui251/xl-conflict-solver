@@ -3,7 +3,7 @@ git branch -D demo-branch-1
 git branch -D demo-branch-2
 python.exe test/example.py 6
 echo "master" > test/test.txt
-git add test/a.xlsx
+git add .
 git commit -m"master: change a.xlsx"
 
 :: Create 'my-file.mrg' on branch 1
