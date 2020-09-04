@@ -90,8 +90,9 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 address = sheet_b.range((row,col)).address.replace('$', '')
 
                 # 检测函数的差异
-                if sheet_a.range((row, col)).formula != sheet_b.range((row, col)).formula:
-                    print('formula different:\n{}\n{}'.format(sheet_a.range((row, col)).formula, sheet_b.range((row, col)).formula))
+                has_formula = sheet_a.range((row, col)).formula[0] == '=' or sheet_b.range((row, col)).formula[0] == '='
+                if has_formula and sheet_a.range((row, col)).formula != sheet_b.range((row, col)).formula:
+                    print('[Debug] formula different:\n{}\n{}'.format(sheet_a.range((row, col)).formula, sheet_b.range((row, col)).formula))
                     diffs[sht_name][address] = {
                         'type': DiffType.formula,
                         'address':address,
