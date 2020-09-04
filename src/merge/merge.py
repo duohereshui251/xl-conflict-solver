@@ -47,11 +47,13 @@ def make_merge(workbook_o, workbook_a, workbook_b):
                 isConflict = True
                 # 值冲突为红色， 函数冲突为绿色
                 if diff['type'] == DiffType.formula or diffs_oa[sht_name][addr]['type'] == DiffType.formula:
+                    print('formula conflict')
                     sheet_a.range(addr).formula = None
                     sheet_a.range(addr).color = green_RGB
                     sheet_a.range(addr).value = '<<<<<<< 表格函数冲突,请重新设置 our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
                     diffs_oa[sht_name]['diff'][0], diffs_ob[sht_name]['diff'][0])
                 else:
+                    print('value conflict')
                     sheet_a.range(addr).color = red_RGB
                     sheet_a.range(addr).value = '<<<<<<< our change\n{}\n=======\n{}\n>>>>>>> their change'.format(
                         sheet_a.range(addr).value, sheet_b.range(addr).value)
