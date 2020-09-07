@@ -88,7 +88,7 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 # a 是当前文件
                 # b 是要对比的文件
                 address = sheet_b.range((row,col)).address.replace('$', '')
-
+                print('[Debug] diff addr: {}'.format(address))
                 # 检测函数的差异
                 fa = False
                 fb = False
