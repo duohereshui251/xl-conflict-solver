@@ -72,7 +72,7 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
         rows = max(len(sheet_a.used_range.rows), len(sheet_b.used_range.rows))
         columns = max(len(sheet_a.used_range.columns),
                       len(sheet_b.used_range.columns))
-        # print('[Debug] row:{0}, col:{1}'.format(rows, columns) )
+        print('[Debug] row:{0}, col:{1}'.format(rows, columns) )
 
         for row in range(1, rows+1):
             # 整行相同跳过
