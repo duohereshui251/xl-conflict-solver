@@ -9,7 +9,7 @@ git commit -m"master: change a.xlsx"
 :: Create 'my-file.mrg' on branch 1
 git checkout -b demo-branch-1
 echo "change a.xlsx on demo-branch-1" 
-python.exe test/example.py 7 -f
+python.exe test/example.py 7 --col 4
 echo "branch1" > test/test.txt
 git add .
 git commit -m"demo-branch-1: change a.xlsx"
@@ -18,7 +18,7 @@ git commit -m"demo-branch-1: change a.xlsx"
 git checkout master
 git checkout -b demo-branch-2 
 echo "change a.xlsx on demo-branch-2" 
-python.exe test/example.py 8 
+python.exe test/example.py 8 --col 5
 echo "branch2" > test/test.txt
 git add .
 git commit -m"demo-branch-2: change a.xlsx"
