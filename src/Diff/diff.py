@@ -83,8 +83,8 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 # print('[Debug] a/{0}'.format(sheet_a.range((row,col)).value))
                 # print('[Debug] b/{0}'.format(sheet_b.range((row,col)).value))
 
-                if sheet_a.range((row, col)).value == sheet_b.range((row, col)).value:
-                    continue
+                # if sheet_a.range((row, col)).value == sheet_b.range((row, col)).value:
+                #     continue
                 # a 是当前文件
                 # b 是要对比的文件
                 address = sheet_b.range((row,col)).address.replace('$', '')
