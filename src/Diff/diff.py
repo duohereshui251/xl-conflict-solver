@@ -92,10 +92,13 @@ def make_diff(workbook_a =None, workbook_b= None, printOn = True):
                 # 检测函数的差异
                 fa = False
                 fb = False
-                if len(sheet_a.range((row, col)).formula) > 0 and sheet_a.range((row, col)).formula[0] == '=':
-                    fa = True
-                if len(sheet_b.range((row, col)).formula) > 0 and sheet_b.range((row, col)).formula[0] == '=':
-                    fb = True
+                if len(sheet_a.range((row, col)).formula) > 0:
+                    if sheet_a.range((row, col)).formula[0] == '=':
+                        fa = True
+                if len(sheet_b.range((row, col)).formula) > 0:
+                    if sheet_b.range((row, col)).formula[0] == '=':
+                        fb = True
+                        
                 has_formula = fa or fb
                 
                 if has_formula and sheet_a.range((row, col)).formula != sheet_b.range((row, col)).formula:
