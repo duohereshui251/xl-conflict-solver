@@ -10,7 +10,7 @@ if option == '-f':
     print('change formula')
     book_a.sheets[0].range(1,3).formula = '=SUM(A1:B1)+{}'.format(s)
 elif option == '--col':
-    print('change col {}'.format(col))
+    print('change col {}'.format(sys.argv[3]))
     col = int(sys.argv[3])
 
 book_a = xw.Book('test/a.xlsx')
